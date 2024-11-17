@@ -1,6 +1,5 @@
 import os
 import logging
-import asyncio
 from uuid import uuid4
 
 from telegram import Update, InlineQueryResultArticle, InputTextMessageContent
@@ -30,6 +29,14 @@ async def simple_api_request(news_token):
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+
+
+async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="Here's help, bruh")
+
+
+async def contact(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="Here's contacts of my dev: @franzandrn")
 
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -72,12 +79,16 @@ def main():
     application = ApplicationBuilder().token(tg_token).build()
 
     start_handler = CommandHandler('start', start)
+    help_handler = CommandHandler('start', help)
+    contact_handler = CommandHandler('start', contact)
     echo_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), echo)
     caps_handler = CommandHandler('caps', caps)
     inline_caps_handler = InlineQueryHandler(inline_caps)
     unknown_handler = MessageHandler(filters.COMMAND, unknown)
 
     application.add_handler(start_handler)
+    application.add_handler(help_handler)
+    application.add_handler(contact_handler)
     application.add_handler(echo_handler)
     application.add_handler(caps_handler)
     application.add_handler(inline_caps_handler)
